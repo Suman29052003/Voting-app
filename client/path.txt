@@ -1,0 +1,29 @@
+my-voting-app/
+│
+├── public/
+│   ├── index.html
+│   └── ...
+│
+├── src/
+│   ├── api/
+│   │   ├── auth.js
+│   │   ├── user.js
+│   │   ├── candidate.js
+│   ├── components/
+│   │   ├── Auth/
+│   │   │   ├── Login.js
+│   │   │   ├── Signup.js
+│   │   ├── Candidate/
+│   │   │   ├── CandidateList.js
+│   │   │   ├── CandidateForm.js
+│   │   ├── User/
+│   │   │   ├── Profile.js
+│   ├── context/
+│   │   ├── AuthContext.js
+│   ├── App.js
+│   ├── index.js
+│   └── ...
+│
+├── .env
+├── package.json
+└── ...
