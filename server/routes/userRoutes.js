@@ -33,7 +33,8 @@ router.post('/signup', async (req, res) =>{
         console.log('data saved');
 
         const payload = {
-            id: response.id
+            id: response.id,
+            role: response.role
         }
         console.log(JSON.stringify(payload));
         const token = generateToken(payload);
@@ -68,6 +69,7 @@ router.post('/login', async(req, res) => {
         // generate Token 
         const payload = {
             id: user.id,
+            role: user.role
         }
         const token = generateToken(payload);
 
@@ -81,17 +83,22 @@ router.post('/login', async(req, res) => {
 
 // Profile route
 router.get('/profile', jwtAuthMiddleware, async (req, res) => {
-    try{
-        const userData = req.user;
-        const userId = userData.id;
+    try {
+        const userId = req.user.id;
         const user = await User.findById(userId);
-        res.status(200).json({user});
-    }catch(err){
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(200).json({ role: user.role }); // Ensure the response includes the role
+    } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-})
+});
 
+
+
+// password update route
 router.put('/profile/password', jwtAuthMiddleware, async (req, res) => {
     try {
         const userId = req.user.id; // Extract the id from the token

@@ -23,7 +23,7 @@ function App() {
                         <Route path="/candidates" element={<CandidateList />} />
                         <Route path="/vote-count" element={<VoteCount />} />
                         <Route path="/add-candidate" element={<AddCandidate />} />
-                        <Route path="/vote" element={<Vote />} />
+                        <Route path="/vote/:candidateID" element={<Vote />} />
                     </Route>
                     <Route path="/" element={<Navigate to="/candidates" replace />} />
                     <Route path="*" element={<Navigate to="/candidates" replace />} />

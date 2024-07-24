@@ -2,36 +2,44 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Profile = () => {
-  const [user, setUser] = useState({});
+    const [profile, setProfile] = useState(null); // Initialize profile as null
+    const [loading, setLoading] = useState(true); // Loading state
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3000/user/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUser(response.data.user);
-    };
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:3000/user/profile', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setProfile(response.data);
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            } finally {
+                setLoading(false); // Set loading to false once data is fetched
+            }
+        };
 
-    fetchProfile();
-  }, []);
+        fetchProfile();
+    }, []);
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4">Profile</h2>
-        <p><strong>Name:</strong> {user.name}</p>
-        <p><strong>Age:</strong> {user.age}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-        <p><strong>Mobile:</strong> {user.mobile}</p>
-        <p><strong>Address:</strong> {user.address}</p>
-        <p><strong>Aadhar Card Number:</strong> {user.aadharCardNumber}</p>
-        <p><strong>Role:</strong> {user.role}</p>
-      </div>
-    </div>
-  );
+    if (loading) {
+        return <div>Loading...</div>; // Render a loading state
+    }
+
+    if (!profile) {
+        return <div>Error loading profile.</div>; // Handle the case where profile is null
+    }
+
+    return (
+        <div className="profile">
+            <h1>{profile.name}</h1>
+            <p>Email: {profile.email}</p>
+            <p>Role: {profile.role}</p>
+        </div>
+    );
 };
 
 export default Profile;

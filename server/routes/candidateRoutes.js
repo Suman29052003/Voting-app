@@ -38,6 +38,7 @@ router.post('/', jwtAuthMiddleware, async (req, res) =>{
     }
 })
 
+// update candidate Data
 router.put('/:candidateID', jwtAuthMiddleware, async (req, res)=>{
     try{
         if(!checkAdminRole(req.user.id))
@@ -63,6 +64,7 @@ router.put('/:candidateID', jwtAuthMiddleware, async (req, res)=>{
     }
 })
 
+// delete candidate data
 router.delete('/:candidateID', jwtAuthMiddleware, async (req, res)=>{
     try{
         if(!checkAdminRole(req.user.id))
@@ -85,46 +87,43 @@ router.delete('/:candidateID', jwtAuthMiddleware, async (req, res)=>{
 })
 
 // let's start voting
-router.get('/vote/:candidateID', jwtAuthMiddleware, async (req, res)=>{
-    // no admin can vote
-    // user can only vote once
-    
-    candidateID = req.params.candidateID;
-    userId = req.user.id;
+router.post('/vote/:candidateID', jwtAuthMiddleware, async (req, res) => {
+    const candidateID = req.params.candidateID;
+    const userId = req.user.id;
 
-    try{
-        // Find the Candidate document with the specified candidateID
+    try {
         const candidate = await Candidate.findById(candidateID);
-        if(!candidate){
+        if (!candidate) {
             return res.status(404).json({ message: 'Candidate not found' });
         }
 
         const user = await User.findById(userId);
-        if(!user){
-            return res.status(404).json({ message: 'user not found' });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
-        if(user.role == 'admin'){
-            return res.status(403).json({ message: 'admin is not allowed'});
+
+        if (user.role === 'admin') {
+            return res.status(403).json({ message: 'Admin is not allowed to vote' });
         }
-        if(user.isVoted){
+
+        if (user.isVoted) {
             return res.status(400).json({ message: 'You have already voted' });
         }
 
-        // Update the Candidate document to record the vote
-        candidate.votes.push({user: userId})
+        candidate.votes.push({ user: userId });
         candidate.voteCount++;
         await candidate.save();
 
-        // update the user document
-        user.isVoted = true
+        user.isVoted = true;
         await user.save();
 
         return res.status(200).json({ message: 'Vote recorded successfully' });
-    }catch(err){
-        console.log(err);
-        return res.status(500).json({error: 'Internal Server Error'});
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 
 // vote count 
 router.get('/vote/count', async (req, res) => {
@@ -146,7 +145,7 @@ router.get('/vote/count', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         // Find all candidates and select only the name and party fields, excluding _id
-        const candidates = await Candidate.find({}, 'name party -_id');
+        const candidates = await Candidate.find({}, 'name party age -_id');
 
         // Return the list of candidates
         res.status(200).json(candidates);

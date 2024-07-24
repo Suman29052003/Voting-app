@@ -6,8 +6,13 @@ const CandidateList = () => {
 
   useEffect(() => {
     const fetchCandidates = async () => {
-      const response = await axios.get('http://localhost:3000/candidate');
-      setCandidates(response.data);
+      try {
+        const response = await axios.get('http://localhost:3000/candidate');
+        console.log('API response:', response.data); // Log the response data
+        setCandidates(response.data);
+      } catch (error) {
+        console.error('Error fetching candidates:', error);
+      }
     };
 
     fetchCandidates();
@@ -21,6 +26,7 @@ const CandidateList = () => {
           <div key={index} className="mb-4 p-4 border border-gray-300 rounded">
             <p><strong>Name:</strong> {candidate.name}</p>
             <p><strong>Party:</strong> {candidate.party}</p>
+            <p><strong>Age:</strong> {candidate.age ? candidate.age : 'N/A'}</p> {/* Fallback for missing age */}
           </div>
         ))}
       </div>

@@ -11,7 +11,7 @@ const Signup = () => {
     address: '',
     aadharCardNumber: '',
     password: '',
-    role: 'Voter' // Set the default value for role here
+    role: 'voter' // Set the default value for role here
   });
 
   const navigate = useNavigate();

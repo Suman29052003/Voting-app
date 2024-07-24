@@ -8,7 +8,7 @@ const VoteCount = () => {
     useEffect(() => {
         const fetchVoteCounts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/candidate/vote/count');
+                const response = await axios.get('http://localhost:3000/candidate/vote/count');
                 console.log('Server response:', response.data); // Check the response structure
                 if (Array.isArray(response.data)) {
                     setVoteCounts(response.data);
