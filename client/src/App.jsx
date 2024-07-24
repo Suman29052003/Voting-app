@@ -8,6 +8,7 @@ import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup';
 import AddCandidate from './components/Candidate/AddCandidate';
 import Vote from './components/voting/Vote';
+import ProtectedRoute from './context/ProtectedRoute';
 
 function App() {
     return (
@@ -17,11 +18,13 @@ function App() {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/candidates" element={<CandidateList />} />
-                    <Route path="/vote-count" element={<VoteCount />} />
-                    <Route path="/add-candidate" element={<AddCandidate />} />
-                    <Route path="/vote" element={<Vote />} />
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/candidates" element={<CandidateList />} />
+                        <Route path="/vote-count" element={<VoteCount />} />
+                        <Route path="/add-candidate" element={<AddCandidate />} />
+                        <Route path="/vote" element={<Vote />} />
+                    </Route>
                     <Route path="/" element={<Navigate to="/candidates" replace />} />
                     <Route path="*" element={<Navigate to="/candidates" replace />} />
                 </Routes>

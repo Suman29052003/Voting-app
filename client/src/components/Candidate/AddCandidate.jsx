@@ -21,7 +21,7 @@ const AddCandidate = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('/api/candidate', candidateData, {
+            const response = await axios.post('http://localhost:3000/candidate', candidateData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -33,10 +33,11 @@ const AddCandidate = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className='w-full bg-transparent'>
+        <form onSubmit={handleSubmit} className='w-full bg-white'>
             <input type="text" name="name" value={candidateData.name} onChange={handleChange} placeholder="Name" />
             <input type="text" name="party" value={candidateData.party} onChange={handleChange} placeholder="Party" />
-            {/* other fields as needed */}
+            <input type="number" name="age" value={candidateData.age} onChange={handleChange} placeholder="Age" />
+            
             <button type="submit">Add Candidate</button>
         </form>
     );

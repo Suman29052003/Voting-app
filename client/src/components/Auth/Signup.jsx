@@ -10,7 +10,8 @@ const Signup = () => {
     mobile: '',
     address: '',
     aadharCardNumber: '',
-    password: ''
+    password: '',
+    role: 'Voter' // Set the default value for role here
   });
 
   const navigate = useNavigate();
@@ -24,12 +25,14 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form Data:', formData); // Log form data
     try {
-      await axios.post('http://localhost:3000/user/signup', formData);
+      const response = await axios.post('http://localhost:3000/user/signup', formData);
+      console.log('Response:', response);
       alert('Signup successful');
       navigate('/login'); 
     } catch (error) {
-      console.error('Error signing up', error);
+      console.error('Error signing up:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -83,6 +86,14 @@ const Signup = () => {
           name="aadharCardNumber"
           placeholder="Aadhar Card Number"
           value={formData.aadharCardNumber}
+          onChange={handleChange}
+        />
+        <input
+          className="mb-4 p-2 w-full border border-gray-300 rounded"
+          type="text"
+          name="role"
+          placeholder="Role"
+          value={formData.role}
           onChange={handleChange}
         />
         <input
