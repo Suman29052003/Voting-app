@@ -89,12 +89,13 @@ router.get('/profile', jwtAuthMiddleware, async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.status(200).json({ role: user.role }); // Ensure the response includes the role
+        res.status(200).json({ name: user.name, email: user.email, role: user.role, mobile:user.mobile, address : user.address, aadharCardNumber : user.aadharCardNumber, isVoted: user.isVoted, candidateId : user.id });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 
 
 

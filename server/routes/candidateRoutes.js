@@ -89,6 +89,8 @@ router.delete('/:candidateID', jwtAuthMiddleware, async (req, res)=>{
 // let's start voting
 router.post('/vote/:candidateID', jwtAuthMiddleware, async (req, res) => {
     const candidateID = req.params.candidateID;
+    console.log("Candidate ID on server:", candidateID);
+
     const userId = req.user.id;
 
     try {
@@ -103,7 +105,7 @@ router.post('/vote/:candidateID', jwtAuthMiddleware, async (req, res) => {
         }
 
         if (user.role === 'admin') {
-            return res.status(403).json({ message: 'Admin is not allowed to vote' });
+            return res.status(403).json({ message: 'Admins are not allowed to vote' });
         }
 
         if (user.isVoted) {
@@ -144,15 +146,13 @@ router.get('/vote/count', async (req, res) => {
 // Get List of all candidates with only name and party fields
 router.get('/', async (req, res) => {
     try {
-        // Find all candidates and select only the name and party fields, excluding _id
-        const candidates = await Candidate.find({}, 'name party age -_id');
-
-        // Return the list of candidates
+        const candidates = await Candidate.find({}, 'name party age _id');
         res.status(200).json(candidates);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 
 module.exports = router;

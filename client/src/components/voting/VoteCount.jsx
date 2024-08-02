@@ -28,15 +28,17 @@ const VoteCount = () => {
     }
 
     return (
-        <div>
-            <h1>Vote Counts</h1>
-            <ul>
+        <div className='w-full bg-white h-[70vh] flex flex-col justify-center items-center gap-3'>
+            <div className="w-full flex flex-col items-center justify-center gap-4">
+            <h1 className='text-4xl font-bold text-center'>Vote Counts</h1>
+            <ul className='text-2xl'>
                 {voteCounts.map((vote, index) => (
-                    <li key={index}>
-                        {vote.party}: {vote.count}
+                    <li key={index} className='mb-2 p-4 px-24 border border-gray-300 rounded'>
+                        <p><strong>{vote.party}:</strong> {vote.count}</p>
                     </li>
                 ))}
             </ul>
+            </div>
         </div>
     );
 };

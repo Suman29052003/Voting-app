@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ candidateID }) => { // Accept candidateID as a prop
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -11,7 +11,7 @@ const Navbar = () => {
     return (
         <nav className="bg-gray-800 p-4 ">
             <div className="flex justify-between items-center">
-                <div className="text-white text-xl">
+                <div className="text-white text-xl py-4">
                     <Link to="/">Voting App</Link>
                 </div>
                 <div className="lg:hidden">
@@ -49,9 +49,9 @@ const Navbar = () => {
                 <li>
                     <Link to="/add-candidate" className="text-white hover:underline block lg:inline">Add Candidate</Link>
                 </li>
-                <li>
-                    <Link to="/vote" className="text-white hover:underline block lg:inline">Vote</Link>
-                </li>
+                    <li>
+                        <Link to={`/vote/${candidateID}`} className="text-white hover:underline block lg:inline">Vote</Link>
+                    </li>
                 <li>
                     <Link to="/login" className="text-white hover:underline block lg:inline">Login</Link>
                 </li>

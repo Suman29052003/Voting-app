@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
     isVoted: {
         type: Boolean,
         default: false
+    },
+    candidateId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Candidate' 
     }
 });
 

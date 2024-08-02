@@ -22,8 +22,8 @@ const AddCandidate = () => {
                     }
                 });
                 console.log('Profile response:', response.data); // Log the entire response
-                setUserRole(response.data.user.role); // Updated this line to access the correct nested field
-                console.log('User role fetched:', response.data.user.role); // Updated this line
+                setUserRole(response.data.role); // Corrected this line
+                console.log('User role fetched:', response.data.role); // Corrected this line
             } catch (error) {
                 console.error('Error fetching user role:', error);
             }
