@@ -9,6 +9,7 @@ import Signup from './components/Auth/Signup';
 import AddCandidate from './components/Candidate/AddCandidate';
 import Vote from './components/voting/Vote';
 import ProtectedRoute from './context/ProtectedRoute';
+import EditCandidate from './components/Candidate/EditCandidate';
 
 function App() {
     return (
@@ -24,6 +25,8 @@ function App() {
                         <Route path="/vote-count" element={<VoteCount />} />
                         <Route path="/add-candidate" element={<AddCandidate />} />
                         <Route path="/vote/:candidateID" element={<Vote />} />
+                        <Route path="/candidates" element={<CandidateList />} />
+                        <Route path="/candidate/edit/:candidateID" element={<EditCandidate />} />   
                     </Route>
                     <Route path="/" element={<Navigate to="/candidates" replace />} />
                     <Route path="*" element={<Navigate to="/candidates" replace />} />

@@ -39,30 +39,34 @@ router.post('/', jwtAuthMiddleware, async (req, res) =>{
 })
 
 // update candidate Data
-router.put('/:candidateID', jwtAuthMiddleware, async (req, res)=>{
-    try{
-        if(!checkAdminRole(req.user.id))
-            return res.status(403).json({message: 'user does not have admin role'});
-        
+// Update candidate data
+router.put('/:candidateID', jwtAuthMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId);
+        if (user.role !== 'admin') {
+            return res.status(403).json({ message: 'User does not have admin role' });
+        }
+
         const candidateID = req.params.candidateID; // Extract the id from the URL parameter
-        const updatedCandidateData = req.body; // Updated data for the person
+        const updatedCandidateData = req.body; // Updated data for the candidate
 
         const response = await Candidate.findByIdAndUpdate(candidateID, updatedCandidateData, {
             new: true, // Return the updated document
             runValidators: true, // Run Mongoose validation
-        })
+        });
 
         if (!response) {
             return res.status(404).json({ error: 'Candidate not found' });
         }
 
-        console.log('candidate data updated');
+        console.log('Candidate data updated');
         res.status(200).json(response);
-    }catch(err){
+    } catch (err) {
         console.log(err);
-        res.status(500).json({error: 'Internal Server Error'});
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-})
+});
 
 // delete candidate data
 router.delete('/:candidateID', jwtAuthMiddleware, async (req, res)=>{
